@@ -1,3 +1,7 @@
+# SPDX-License-Identifier: AGPL-3.0
+#
+# Maintainer: Truocolo <truocolo@aol.com>
+# Maintainer: Pellegrino Prevete (tallero) <pellegrinoprevete@gmail.com>
 # Maintainer: Jelle van der Waa <jelle@vdwaa.nl>
 # Contributor: Jelle van der Waa <jelle@vdwaa.nl>
 
@@ -26,3 +30,4 @@ check() {
 
     pytest tests.py
 }
+
