@@ -5,29 +5,69 @@
 # Maintainer: Jelle van der Waa <jelle@vdwaa.nl>
 # Contributor: Jelle van der Waa <jelle@vdwaa.nl>
 
-pkgname=python-webencodings
+_py="python"
+_pyver="$( \
+  "${_py}" \
+    -V | \
+    awk \
+      '{print $2}')"
+_pymajver="${_pyver%.*}"
+_pyminver="${_pymajver#*.}"
+_pynextver="${_pymajver%.*}.$(( \
+  ${_pyminver} + 1))"
+_pkg=webencodings
+_Pkg="python-${_pkg}"
+pkgname="${_py}-${_pkg}"
 pkgver=0.5.1
 pkgrel=11
-arch=('any')
-url="https://github.com/gsnedders/python-webencodings"
-license=('BSD')
-pkgdesc="This is a Python implementation of the WHATWG Encoding standard."
-depends=('python')
-makedepends=('python' 'python-setuptools')
-checkdepends=('python-pytest')
-source=($pkgname-$pkgver.tar.gz::https://github.com/gsnedders/python-webencodings/archive/v${pkgver}.tar.gz)
-sha256sums=('082367f568a7812aa5f6922ffe3d9d027cd83829dc32bcaac4c874eeed618000')
+arch=(
+  'any'
+)
+_http="https://github.com"
+_ns="gsnedders"
+url="${_http}/${_ns}/${_Pkg}"
+license=(
+  'BSD'
+)
+_pkgdesc=(
+  "This is a Python implementation"
+  "of the WHATWG Encoding standard."
+)
+pkgdesc="${_pkgdesc[*]}"
+depends=(
+  ${_py}>=${_pymajver}"
+  ${_py}<${_pynextver}"
+)
+makedepends=(
+  "${_py}"
+  "${_py}-setuptools"
+)
+checkdepends=(
+  "${_py}-pytest"
+)
+source=(
+  "${pkgname}-${pkgver}.tar.gz::${url}/archive/v${pkgver}.tar.gz"
+)
+sha256sums=(
+  '082367f568a7812aa5f6922ffe3d9d027cd83829dc32bcaac4c874eeed618000'
+)
 
 package_python-webencodings() {
-    cd ${pkgbase}-${pkgver}
-
-    python3 setup.py install --root="${pkgdir}"
-    install -D -m644 LICENSE "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE
+  cd \
+    "${pkgbase}-${pkgver}"
+  "${_py}" \
+    setup.py \
+      install \
+      --root="${pkgdir}"
+  install \
+    -Dm644 \
+    "LICENSE" \
+    "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 }
 
 check() {
-    cd ${pkgbase}-${pkgver}/webencodings
-
-    pytest tests.py
+  cd \
+    "${pkgbase}-${pkgver}/webencodings"
+  pytest \
+    "tests.py"
 }
-
